@@ -1,34 +1,82 @@
 <!DOCTYPE html>
-<html >
+<html>
+
 <head>
   <meta charset="UTF-8">
   <title>Bullshit Detector</title>
-  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  
+  <link href='https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap' rel='stylesheet' type='text/css'>
+  <style>
+    body {
+      background: #f5f5f5;
+      font-family: 'Roboto', sans-serif;
+      color: #333333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container h1 {
+      font-size: 48px;
+      margin-bottom: 30px;
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .form textarea {
+      width: 500px;
+      height: 150px;
+      padding: 10px;
+      font-size: 18px;
+      color: #333;
+      border: none;
+      background: #fff;
+      resize: none;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+    }
+
+    .form button {
+      width: 200px;
+      padding: 10px;
+      font-size: 18px;
+      color: #fff;
+      background: #4a90e2;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .form button:hover {
+      background: #367ac5;
+    }
+  </style>
 </head>
 
-<body style="background: #000;">
- <div class="login">
-	<h1>Bullshit Detector</h1>
-
-     <!-- Main Input For Receiving Query to our ML -->
-    <form action="{{ url_for('predict')}}"method="post">
-    	<input type="text" name="text" placeholder="text" required="required" />
-
-
-        <button type="submit" class="btn btn-primary btn-block btn-large">Predict fake news</button>
+<body>
+  <div class="container">
+    <h1>Bullshit Detector</h1>
+    <form class="form" action="{{ url_for('predict')}}" method="post">
+      <textarea name="text" placeholder="Enter the text" required="required"></textarea>
+      <button type="submit">Predict fake news</button>
     </form>
-
-   <br>
-   <br>
-   {{ prediction_text }}
-
- </div>
-
-
+    <br>
+    <br>
+    {{ prediction_text }}
+  </div>
 </body>
+
 </html>
