@@ -7,14 +7,14 @@ from tokenizers import BertWordPieceTokenizer
 from model import model_predict, load_model, StringCleaner, Stemmer
 
 app = Flask(__name__)
-model = load_model('../Models/model.tflite', 'tflite')
+model = load_model('models/pipe.pkl', 'sklearn')
 
-tokenizer = transformers.DistilBertTokenizer.from_pretrained('distilbert-base-multilingual-cased')
+#tokenizer = transformers.DistilBertTokenizer.from_pretrained('distilbert-base-multilingual-cased')
 # Save the loaded tokenizer locally
-tokenizer.save_pretrained('.')
+#tokenizer.save_pretrained('.')
 # Reload it with the huggingface tokenizers library
-fast_tokenizer = BertWordPieceTokenizer('vocab.txt', lowercase=False)
-#fast_tokenizer = None
+#fast_tokenizer = BertWordPieceTokenizer('vocab.txt', lowercase=False)
+fast_tokenizer = None
 
 @app.route('/')
 def home():
@@ -25,7 +25,7 @@ def predict():
 
     text_input = list(request.form.values())
     pred_class, probability = model_predict(text_input, model, 
-                                            model_type='tflite', tokenizer=fast_tokenizer)
+                                            model_type='sklearn', tokenizer=fast_tokenizer)
 
     if pred_class.shape == (1,1):
         if pred_class[0][0] == 0:
@@ -48,7 +48,7 @@ def results():
     data = request.get_json(force=True)
     text_input = list(data.values())
     pred_class, _ = model_predict(text_input, model, 
-                                  model_type='tflite', tokenizer=fast_tokenizer)
+                                  model_type='sklearn', tokenizer=fast_tokenizer)
 
     if pred_class.shape == (1,1):
         if pred_class[0][0] == 0:
