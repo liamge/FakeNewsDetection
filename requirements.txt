@@ -3,6 +3,6 @@ gunicorn
 scikit-learn
 tensorflow
 numpy
-pickle
+pickle4
 transformers
 nltk
