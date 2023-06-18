@@ -6,51 +6,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 
 from flask import Flask, request, jsonify, render_template
 from tokenizers import BertWordPieceTokenizer
-from model import model_predict, load_model
-
-class StringCleaner(BaseEstimator, TransformerMixin):
-    def fit(self, X, y=None):
-        return self
-
-    def transform(self, X, y=None):
-        # Perform arbitary transformation
-        X = [self.clean_string(x) for x in X]
-        return X
-    
-    def replace_url(self, s):
-        return re.sub(r'http\S+', ' URL ', s)
-
-    def replace_mentions(self, s):
-        return re.sub(r'@([A-Za-z0-9_]+)', ' MENTION ')
-
-    def replace_nums(self, s):
-        return re.sub(r'\d+', ' NUM ', s)
-
-    def remove_punct(self, s):
-        return ''.join(x for x in s if x not in string.punctuation)
-
-    def whitespace_regularization(self, s):
-        # If there is more than one space in a row in our string, 
-        # we normalize that to one space
-        return re.sub(r'\s+', ' ', s)
-
-    def clean_string(self, s):
-        temp = self.replace_url(s.lower())
-        temp = self.replace_nums(temp)
-        temp = self.remove_punct(temp)
-        temp = self.whitespace_regularization(temp)
-
-        return temp
-    
-class Stemmer(BaseEstimator, TransformerMixin):
-    def fit(self, X, y=None):
-        return self
-
-    def transform(self, X, y=None):
-        # Perform arbitary transformation
-        stemmer = PorterStemmer()
-        X = [' '.join([stemmer.stem(w) for w in word_tokenize(x)]) for x in X]
-        return X
+from model import model_predict, load_model, StringCleaner, Stemmer
 
 app = Flask(__name__)
 model = load_model('models/pipe.pkl', 'sklearn')
