@@ -6,7 +6,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 
 from flask import Flask, request, jsonify, render_template
 from tokenizers import BertWordPieceTokenizer
-from model import model_predict, load_model, StringCleaner, Stemmer
+from .model import model_predict, load_model, StringCleaner, Stemmer
 
 app = Flask(__name__)
 model = load_model('models/pipe.pkl', 'sklearn')
