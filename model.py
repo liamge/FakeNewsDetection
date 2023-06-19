@@ -2,6 +2,8 @@ import pickle
 import re
 import string
 
+import transformers
+
 import numpy as np
 from tqdm import tqdm
 
@@ -55,10 +57,14 @@ class Stemmer(BaseEstimator, TransformerMixin):
         return X
 
 def load_model(model_path, model_type):
-    if model_type == "tensorflow":
+    if model_type == "bert":
         import tensorflow as tf
         model = tf.keras.models.load_model(model_path, 
                                     custom_objects={"TFDistilBertModel": transformers.TFDistilBertModel})
+    elif model_type == "tinybert":
+        import tensorflow as tf
+        model = tf.keras.models.load_model(model_path, 
+                                    custom_objects={"TFBertModel": transformers.TFBertModel})
     elif model_type == 'tflite':
         import tensorflow as tf
         model = tf.lite.Interpreter(model_path=model_path)
